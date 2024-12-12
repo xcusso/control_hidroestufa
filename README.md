@@ -61,6 +61,8 @@ RBS3 = "Rele Bomba Secundaria mrxa 3" Activa la marxa 3 **
 RA = "Relé Alarma" Relé per activar un avís sonor/lluminós de perill.
 SCA= "Servo Control Admisió" Servomotor que pot obrir o ofegar l'entrada d'aire secundaria (posterior a la caldera - provinent del exterior)
 
+Idea: Valorar la possibilitat d'utilitzar un SAI per alimentar les dues bombes i el controlador de seguretat. En cas de fallida electrica, podem tenir lectures per activar alarmes i tancar pas d'aire. EL controlador de confort no li cal, ja que si cau lectricitat els actuadors termics NO s'obriràn i deixan passar aigua a tots els radiadors. La bomba secundaria s'obrirà automàticament amb el termo interruptor i disisparà l'escalfor a tots els radiadors...
+
 Objectius:
 Creació d'un sistema de control per supervisar els valors del sistema, avisar de mal funcionaments i optimitzar el rendiment.
 Per motius de seguretat dividirem el sistema amb dos controladors separats. 
@@ -98,6 +100,38 @@ Idea: En el cas que TC passi de 95 i/o PS de 2,5 podriem forçar una maniobra au
 Autoregulació de la combustió:
 Combinant les dades del segon sistema de control i sempre que no es donin situacions de perill, podem donar el control del SCA externament, ja sigui a un control manual o automatic de regulació de la combustió.
 
+Controlador de confort:
+Estarà fiscament connectat a TI i TR, RBS (possibilitat de control de marxes RBS1, RBS2, RBS3), i al control de la placa d'actuadors termics. Rebrà la informació dels valors de TC i TF i dels sensors de temperatura i presencia de les habitacions i temperatura exterior.
+L'objectiu serà distribuir l'escalfor generada per la caldera de forma optima.
+Habitacions:
+  - Rebedor
+  - Cuina
+  - Menjador
+  - Sala d'estar
+  - Bany P0
+  - Despatx
+  - Escala
+  - Distribuidor
+  - Suite
+  - Bany Suite
+  - Habitació 1 i 2 (van juntes amb els radiadors)
+  - Bany superior
+  - Estudi
+
+Podem distingir diversos modes de funcionament:
+- Automàtic
+- Manual: indicant zones i temperatures
+
+- Confort total: S'intentarà mantenir tota la casa a la temperatura de confort (preestablerta).
+- Priorització de una o diverses zones: Es podra determinar de forma dinàmica quines zones tenen prioritat per intentar aconseguir la temperatura de confort en el temps mes breu.
+
+En funció de les hores del dia: 
+Mati: Sala estar, menjador, cuina, dormitoris i banys.
+Dia: Sala estar, menjador, bany P0, cuina, estudi i despatx
+Vespre: Sala estar, menjador, bany P0, cuina, dormitoris i banys (tot excepte estudi, despatx, rebedor, distribuidor, escala)
+Nit: Dormitoris i banys
+
+Aixo combinat amb els sensors de presencia. Si detectem presencia més de X temps, engeguem la zona com prioritaria
 
 
 
