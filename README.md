@@ -53,3 +53,5 @@ PS = "Presió Sistema" es un transductor situat al costat del vas d'expansió.
 
 
 
+
+
