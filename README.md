@@ -1,7 +1,7 @@
 PROJECTE CONTROL HIDROESTUFA
 
 Aquest projecte preten controlar i supervisar el funcionament d'una hidroestufa de llenya.
-L'objectiu és facilitar una capa més de seguretat al sistema i optimitzar el funcionament en termes d'efeciciencia i confort.
+L'objectiu és facilitar una capa més de seguretat al sistema i optimitzar el funcionament en termes d'eficiencia i confort.
 
 El projecte es dissenya per a una hidrostufa de llenya instal.lada en una casa unifamiliar als voltants del Montseny (Catalunya).
 
@@ -56,7 +56,7 @@ RBP = "Rele Bomba Primaria" Rele en pararl.lel amb el TP que engega la Bomba Pri
 RBS = "Rele Bomba Secundaria" Relé en paral.lel amb TS que engega la Bomba Secundaria.
 RBS1 = "Rele Bomba Secundaria marxa 1" Activa la marxa 1 **
 RBS2 = "Rele Bomba Secundaria marxa 2" Activa la marxa 2 **
-RBS3 = "Rele Bomba Secundaria mrxa 3" Activa la marxa 3 **
+RBS3 = "Rele Bomba Secundaria marxa 3" Activa la marxa 3 **
 ** Cal veure si és factible i si cal.
 RA = "Relé Alarma" Relé per activar un avís sonor/lluminós de perill.
 SCA= "Servo Control Admisió" Servomotor que pot obrir o ofegar l'entrada d'aire secundaria (posterior a la caldera - provinent del exterior)
