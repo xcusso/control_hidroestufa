@@ -65,8 +65,8 @@ Accions:
 - Reduir el tir secundari de Central de Control de forma progresiva en el temps (cal fer-ho de forma suau).
 - Indicar al display que cal reduir el tir de forma manual.
   Si un cop el tir secundari es al minim programat cal:
-    - Anar desactivant els actuadors termics seguint un ordre de prioritats per potencia excesiva. Es farà de forma sequencial en funció de unes prioritats definides.
-      Proposta de prioritats: (On menys molesti una sobretemperatura)
+    - Anar desactivant els actuadors termics (obrint circuits per fer circular aigua calenta als radiadors) seguint un ordre de prioritats per potencia excesiva. Es farà de forma sequencial en funció de unes prioritats definides.
+      Proposta de prioritats (sempre que no es trobin ja oberts): (On menys molesti una sobretemperatura)
       - Sortida ACS
       - Radiador Escala
       - Radiador Passadis P1
@@ -77,8 +77,49 @@ Accions:
       - Radiador Estudi P1
       - Radiador Cuina Menjador P0
       - Radiador Despatx
-      - 
- 
+      - Radiador habitacions
+      - Radiador Suite
+      - Radiador sala estar (aquest es l'ultim ja que també hi ha la calentor directa de la hidroestufa)
+
+D - Potencia insuficient per demanda
+Si la HE esta en funcionament i (amb independencia de que s'hagi assolit la temperatura de confort)
+Accions: 
+- Obrir el tir secundari de Central de Control de forma progresiva en el temps (cal fer-ho de forma suau).
+- Indicar al display que cal obrir el tir de forma manual o si ja està obert procedir a una recàrrega de combustible.
+  Si un cop el tir secundari està obert al màxim cal:
+      Anar activant els actuadors termics (tancant circuits apagar radiadors) seguint un ordre de prioritats per potencia insuficient. Es farà de forma sequencial en funció de unes prioritats definides i del mode de la casa/presencia.
+MODE DIA
+    Proposta de prioritats mode dia (sempre que no es trobin ja tancats): (On menys molesti una baixa temperatura)
+      - Sortida ACS
+      - Radiador Escala
+      - Radiador Passadis P1
+      - Radiador Rebedor P0
+      - Tovallolero Bany P1
+      - Tovallolero Bany Suite P1
+      - Tovallolero Bany P0
+      - Radiador habitacions
+      - Radiador Suite
+      - Radiador Estudi P1
+      - Radiador Despatx
+      - Radiador Cuina Menjador P0
+      - Radiador sala estar
+
+  MODE NIT
+    Proposta de prioritats mode dia (sempre que no es trobin ja tancats): (On menys molesti una baixa temperatura)
+      - Sortida ACS
+      - Radiador Estudi P1
+      - Radiador Rebedor P0
+      - Radiador Despatx
+      - Radiador Escala
+      - Tovallolero Bany P0
+      - Radiador Cuina Menjador P0
+      - Radiador sala estar
+      - Radiador Passadis P1
+      - Tovallolero Bany P1
+      - Tovallolero Bany Suite P1
+      - Radiador habitacions
+      - Radiador Suite
+ * Tant en Mode DIA com en Mode NIT si s'activa el sensor de presencia mes de x minuts tindrà preferencia i anirà al final de l'escala. En cas de competencia entre zones amb presencia s'utilitzaràn les prioritats (p.e. Mode NIT Hi ha algu al Estudi i també a la Suite -> S'apagarà bans l'estudi i després la Suite.
 
 G - Alarma Sobretemperatura:
 La temperatura d'impulsió TI és superior a ?? 90ºC? (cal determinar aquest valor de forma experimental). TI: Temperatura màxima de seguretat (aquest valor experimental s'ha de poder configurar en programació en el propi ESP32)
@@ -88,7 +129,8 @@ La temperatura d'impulsió TI és superior a ?? 90ºC? (cal determinar aquest va
 - Donar activació a un avís visual, sonor i missatge de Telegram.
 
 
-
+NOTA: Estaria bé fer un indicador gràfic (o texte només de moment) indicant les zones i la seva situació de confort (amb blaus per menys temperatura i vermells per a excés). 
+En el projecte solar, s'utilitzaràn aquestes prioritats per enviar calor a les diferents zones amb els calefactors. L'objectiu és escalfar la zona mes freda evitant que la casa baixi de 18ºC aprofitant excdents solars..
 
 
 
