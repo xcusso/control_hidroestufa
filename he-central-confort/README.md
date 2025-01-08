@@ -31,7 +31,7 @@ En la instal.lació del col·lector (3+12) hi ha els següents circuits:
 Els 14 circuits estan controlats per un actuador eletro-termic NO que quan rep tensió tanca el circuit. D'aquesta manera en cas de fallada electrica/software els actuadors obren tots els circuits evitant que la hidroestufa es sobre-escalfi.
 
 Materials:
-- Sonda temperatura Dallas
+- Sonda temperatura Dallas (DS18B20)
 - Vaina d'inmersió
 - Placa de relés d'estat solid:
     www.iomug.com 16 channel I2C Interface Solid State Relay Module basat en PCF8575
