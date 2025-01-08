@@ -1,1 +1,181 @@
+# HE CENTRAL CONFORT
+# VERSIO 0.1
 
+esphome:
+  name: he-central-confort
+  friendly_name: HE Central Confort
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "7hZGvyzNpDDOJXOCHvRXa59L20zHXGSiJ4NpDGToHUk="
+
+ota:
+  - platform: esphome
+    password: "a2bcaf6c8c19daceb8e08050cc273834"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "He-Central-Confort"
+    password: "Kv2BYCeumf1K"
+
+captive_portal:
+
+# Bus comunicació I2C (placa relés)
+i2c:
+  sda: GPIO21
+  scl: GPIO22
+  scan: true
+  id: bus_a
+
+# Configuració placa reles estat solid
+pcf8574:
+  - id: 'reles_valvules'
+    address: 0x21
+    pcf8575: true
+
+# Individual outputs
+# 16 Sortides A-P
+switch:
+  - platform: gpio
+    name: "RELE A"
+    pin:
+      pcf8574: reles_valvules
+      # Use pin number 0
+      number: 0
+      # One of INPUT or OUTPUT
+      mode:
+        output: true
+      inverted: false
+  - platform: gpio
+    name: "RELE B"
+    pin:
+      pcf8574: reles_valvules
+      number: 1
+      mode:
+        output: true
+      inverted: false
+  - platform: gpio
+    name: "RELE C"
+    pin:
+      pcf8574: reles_valvules
+      number: 2
+      mode:
+        output: true
+      inverted: false    
+  - platform: gpio
+    name: "RELE D"
+    pin:
+      pcf8574: reles_valvules
+      number: 3
+      mode:
+        output: true
+      inverted: false  
+  - platform: gpio
+    name: "RELE E"
+    pin:
+      pcf8574: reles_valvules
+      number: 4
+      mode:
+        output: true
+      inverted: false
+  - platform: gpio
+    name: "RELE F"
+    pin:
+      pcf8574: reles_valvules
+      number: 5
+      mode:
+        output: true
+      inverted: false  
+  - platform: gpio
+    name: "RELE G"
+    pin:
+      pcf8574: reles_valvules
+      number: 6
+      mode:
+        output: true
+      inverted: false                   
+  - platform: gpio
+    name: "RELE H"
+    pin:
+      pcf8574: reles_valvules
+      number: 7
+      mode:
+        output: true
+      inverted: false  
+  - platform: gpio
+    name: "RELE I"
+    pin:
+      pcf8574: reles_valvules
+      number: 8
+      mode:
+        output: true
+      inverted: false 
+  - platform: gpio
+    name: "RELE J"
+    pin:
+      pcf8574: reles_valvules
+      number: 9
+      mode:
+        output: true
+      inverted: false
+  - platform: gpio
+    name: "RELE K"
+    pin:
+      pcf8574: reles_valvules
+      number: 10
+      mode:
+        output: true
+      inverted: false 
+  - platform: gpio
+    name: "RELE L"
+    pin:
+      pcf8574: reles_valvules
+      number: 11
+      mode:
+        output: true
+      inverted: false   
+  - platform: gpio
+    name: "RELE M"
+    pin:
+      pcf8574: reles_valvules
+      number: 12
+      mode:
+        output: true
+      inverted: false  
+  - platform: gpio
+    name: "RELE N"
+    pin:
+      pcf8574: reles_valvules
+      number: 13
+      mode:
+        output: true
+      inverted: false 
+  - platform: gpio
+    name: "RELE O"
+    pin:
+      pcf8574: reles_valvules
+      number: 14
+      mode:
+        output: true
+      inverted: false 
+  - platform: gpio
+    name: "RELE P"
+    pin:
+      pcf8574: reles_valvules
+      number: 15
+      mode:
+        output: true
+      inverted: false 
