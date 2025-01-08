@@ -178,4 +178,38 @@ switch:
       number: 15
       mode:
         output: true
-      inverted: false 
+      inverted: false
+
+# Bus lectura sensors Dallas
+one_wire:
+  - platform: gpio
+    pin: GPIO20
+    id: bus_sensor_temp
+
+# Sensors temperatura impulsió i retorn
+# Basats en Dallas DS18B20 
+sensor:
+  - platform: dallas_temp
+    one_wire_id: bus_sensor_temp
+    address: 0x1234567812345628
+    name: "T Impulsió"
+    id: TI
+    update_interval: 60s
+    # Optional variables:
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_class: "temperature"
+    state_class: "measurement"
+    accuracy_decimals: 1
+  - platform: dallas_temp
+    one_wire_id: bus_sensor_temp
+    address: 0x1234567812345629
+    name: 'T Retorn'
+    id: TR
+    update_interval: 60s
+    # Optional variables:
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_class: "temperature"
+    state_class: "measurement"
+    accuracy_decimals: 1
