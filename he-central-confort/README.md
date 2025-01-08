@@ -34,7 +34,7 @@ Materials:
 - Sonda temperatura Dallas
 - Vaina d'inmersió
 - Placa de relés d'estat solid:
-    www.iomug.com 16 channel I2C Interface Solid State Relay Module
+    www.iomug.com 16 channel I2C Interface Solid State Relay Module basat en PCF8575
 - Suport per rail DRG-01
 - ESP32
 
