@@ -25,3 +25,11 @@ Si la pressió excedeix els 2,5Bar activarem una alarma visual i sonora amb indi
 Si la temperatura de caldera es superior a 85ºC (cal ajustar aquesta temperatura de forma empirica) cal activar alarma visual de sobretemperatura.
 Si la temperatura de caldera es superior a 95ºC (cal ajustar aquesta temperatura de forma empirica) cal activar alarma sonora i visual de sobretemperatura. Amb indicacións de com fer baixar la temperatura (obrint valvules de purgat perque entri aigua freda a sistema)
 
+Medició de la pressió:
+Hem comprat un senso de 0 a 0,5MPa que medeix entre 0 i 5Bar
+El sensor s'alimenta a 5V i dona valors de 0,5V per 0bar i 4,5V per 5bar. Com que el ESP només llegeix entre 0 i 2.45V (atenuant a 12db)cal fer un divisor de tensió.
+Farem que R1=330 i R2=1K per tant Vout = (VinxR2)/(R1+R2) donarà com a màxim 3.38V per 5bar. Tenim valvules que obren 3bar, per tant no hi arribarà mai. 
+Amb aquest divisor tindrem una lectura màxima (3.4bar) de 2.42V a la que en teoria no arribarem mai (si es que no fallen les 2 valvules de 3bar).
+A 3bar (maxim) esperarem una sortira de 2.180V, a 1,5bar (normal) llegirem 1.27V
+La presició és de 12bits.
+
