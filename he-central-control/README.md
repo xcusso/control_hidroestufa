@@ -23,5 +23,5 @@ Si la presió excedeix els 2bar activarem una alarma visual de sobrepressió
 Si la pressió és inferior a 1,2Bar activarem una alarma de pressió insuficient del sistema o (fallo de del sensor o vàlvula de reomplert automàtic). Recomanació mirar manometres mecanics (un al costat caldera) i dos més a la sala de màquines.
 Si la pressió excedeix els 2,5Bar activarem una alarma visual i sonora amb indicacions de buidat del circuit de forma manual.
 Si la temperatura de caldera es superior a 85ºC (cal ajustar aquesta temperatura de forma empirica) cal activar alarma visual de sobretemperatura.
-Si la temperatura de caldera es superior a 95ºC (cal ajustar aquesta temperatura de forma empirica) cal activar alarma sonora i visual de sobretemperatura. AMb indicacións de com fer baixar la temperatura (obrint valvules de purgat perque entri aigua freda a sistema)
+Si la temperatura de caldera es superior a 95ºC (cal ajustar aquesta temperatura de forma empirica) cal activar alarma sonora i visual de sobretemperatura. Amb indicacións de com fer baixar la temperatura (obrint valvules de purgat perque entri aigua freda a sistema)
 
