@@ -33,3 +33,6 @@ Amb aquest divisor tindrem una lectura màxima (3.4bar) de 2.42V a la que en teo
 A 3bar (maxim) esperarem una sortira de 2.180V, a 1,5bar (normal) llegirem 1.27V
 La presició és de 12bits.
 
+Control de servo:
+
+
