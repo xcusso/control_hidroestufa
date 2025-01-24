@@ -25,6 +25,19 @@ Si la pressió excedeix els 2,5Bar activarem una alarma visual i sonora amb indi
 Si la temperatura de caldera es superior a 85ºC (cal ajustar aquesta temperatura de forma empirica) cal activar alarma visual de sobretemperatura.
 Si la temperatura de caldera es superior a 95ºC (cal ajustar aquesta temperatura de forma empirica) cal activar alarma sonora i visual de sobretemperatura. Amb indicacións de com fer baixar la temperatura (obrint valvules de purgat perque entri aigua freda a sistema)
 
+Medició de la temperatura:
+S'utilitzen dos sensors tipus PT100 model WZP-291 (-200 fins a 450ºC) controlats per dos moduls Max31865. 
+Una sonda és per llegir la temperatura del aigua a la part superior de la caldera i l'altre per llegir la temperatura dels fums de la ximeneia.
+Es fan servir aquests tipus de sensors per la seva robustesa. El circuit comparteix bus spi:
+spi:
+  - id: spi_bus0
+    clk_pin: GPIOXX
+    mosi_pin: GPIOXX
+    miso_pin: GPIOXX
+..i utilitza un CS per determinar quins dels dos sensors.
+
+
+
 Medició de la pressió:
 Hem comprat un senso de 0 a 0,5MPa que medeix entre 0 i 5Bar
 El sensor s'alimenta a 5V i dona valors de 0,5V per 0bar i 4,5V per 5bar. Com que el ESP només llegeix entre 0 i 2.45V (atenuant a 12db)cal fer un divisor de tensió.
