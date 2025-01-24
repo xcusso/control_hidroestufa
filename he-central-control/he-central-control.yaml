@@ -40,29 +40,51 @@ spi:
   mosi_pin: 21
   clk_pin: 23
 
+binary_sensor:
+ - platform: template
+   id: foc_ences
+   name: "Foc encés"
+   lambda: |-
+      if (id(temp_fums).state > 45) {
+        // Si la temperatura dels fums es superior a 45ºC considerem qu hi ha foc
+        return true;
+      } else {
+        // Si la temperatura dels fums es inferior a 45ºC considerem que no hi ha foc.
+        return false;
+      }
+   condition:
+    sensor.in_range:
+       id: temp_fums
+        below: 45
 sensor:
+  # Temperatura de fums 
   - platform: max31865
-    name: "Temp ximeneia"
+    name: "Temp fums"
+    id: temp_fums
     cs_pin: 19
     reference_resistance: 430 Ω
     rtd_nominal_resistance: 100 Ω
-
-# Sonda temperatura caldera
-# Bus lectura sensors Dallas
-one_wire:
-  - platform: gpio
-    pin: GPIO20
-    id: bus_sensor_temp
-
-# Basat en Dallas DS18B20 
-sensor:
-  - platform: dallas_temp
-    one_wire_id: bus_sensor_temp
-    address: 0x1234567812345628
-    name: "Temp Caldera"
-    id: TC
     update_interval: 30s
-    # Optional variables:
+     # Optional variables:
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_class: "temperature"
+    state_class: "measurement"
+    accuracy_decimals: 1
+    on_value_range:
+      # Fums per sota 45ºC
+      - below: 45
+        then 
+
+  # Temperatura de fums   
+  - platform: max31865
+    name: "Temp aigua"
+    id: temp_aigua
+    cs_pin: 20
+    reference_resistance: 430 Ω
+    rtd_nominal_resistance: 100 Ω
+    update_interval: 30s
+     # Optional variables:
     unit_of_measurement: "°C"
     icon: "mdi:thermometer"
     device_class: "temperature"
