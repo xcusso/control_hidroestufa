@@ -33,29 +33,94 @@ wifi:
 
 captive_portal:
 
-#MAX31865 Control de temperatura Ximeneia
-# Example configuration entry
+#MAX31865 Control de temperatura aigua i fums 
 spi:
   miso_pin: 22
   mosi_pin: 21
   clk_pin: 23
 
 binary_sensor:
+# PRESENCIA FOC
  - platform: template
    id: foc_ences
    name: "Foc encés"
    lambda: |-
       if (id(temp_fums).state > 45) {
-        // Si la temperatura dels fums es superior a 45ºC considerem qu hi ha foc
+        // Si la temperatura dels fums es superior a 45ºC considerem que hi ha foc
         return true;
       } else {
         // Si la temperatura dels fums es inferior a 45ºC considerem que no hi ha foc.
         return false;
       }
-   condition:
-    sensor.in_range:
-       id: temp_fums
-        below: 45
+# ALARMA TEMP -> Poden obrir-se les vàlvules
+ - platform: template
+   id: alarma_temp
+   name: "Perill Sobretemperatura"
+   lambda: |-
+      if (id(temp_aigua).state > 95) {
+        // Si la temperatura del aigua es superior a 95ºC considerem que hi ha perill sobretemperatura
+        return true;
+      } else {
+        // Si la temperatura del aigua es inferior a 95ºC considerem que esta normal
+        return false;
+      }
+
+# ALARMA PERILL TEMP
+ - platform: template
+   id: perill_alta_temp
+   name: "Sobretemperatura"
+   lambda: |-
+      if (id(temp_aigua).state > 90) {
+        // Si la temperatura del aigua es superior a 90ºC considerem que hi ha sobretemperatura
+        return true;
+      } else {
+        // Si la temperatura del aigua es inferior a 90ºC considerem que esta normal
+        return false;
+      }      
+
+# ALARMA PRESSIO
+ - platform: template
+   id: alarma_alta_pressio
+   name: "Sobrepressió"
+   lambda: |-
+      if (id(pressio).state > 2.5) {
+        // Si la pressio del aigua es superior a 2.5Bar considerem que hi ha sobrepressio
+        return true;
+      } else {
+        // Si la pressio del aigua es inferior a 2.5Bar considerem que esta normal
+        return false;
+      }
+
+      
+
+# ALARMA PERILL PRESSIO -> Per activar avís sonor
+ - platform: template
+   id: perill_alta_pressio
+   name: "Perill Sobrepressió"
+   lambda: |-
+      if (id(pressio).state > 2.8) {
+        // Si la pressio del aigua es superior a 2.8Bar considerem que hi ha perill sobrepressio
+        return true;
+      } else {
+        // Si la pressio del aigua es inferior a 2.8Bar considerem que no hi ha perill
+        return false;
+      }
+
+  # ALARMA BAIXA PRESSIO
+ - platform: template
+   id: alarma_baixa_pressio
+   name: "Poca pressió"
+   lambda: |-
+      if (id(pressio).state < 1) {
+        // Si la pressio del aigua es inferior a 1Bar considerem que hi ha poca pressió
+        return true;
+      } else {
+        // Si la pressio del aigua es superior a 1Bar considerem que esta normal
+        return false;
+      }
+
+
+
 sensor:
   # Temperatura de fums 
   - platform: max31865
@@ -71,10 +136,7 @@ sensor:
     device_class: "temperature"
     state_class: "measurement"
     accuracy_decimals: 1
-    on_value_range:
-      # Fums per sota 45ºC
-      - below: 45
-        then 
+   
 
   # Temperatura de fums   
   - platform: max31865
@@ -132,6 +194,7 @@ sensor:
   - platform: adc
     pin: GPIO35
     name: 'Pressió'
+    id: pressio
     attenuation: 12db
     device_class: "pressure"
     state_class: "measurement" #Perque mantingui les dades
