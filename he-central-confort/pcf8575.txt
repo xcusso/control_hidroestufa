@@ -1,0 +1,114 @@
+******************************************************************************
+ * 
+ * Demo testing code for 16 Channel I2C Solid State Relay module
+ * 
+ * i2c port expand chip PCF8575
+ * 
+ * please download necessary library PCF8575.h from  arduino.cc 
+ * 
+ * LOW level relay is ON / HIGH level relay is OFF
+ * 
+ *******************************************************************************/
+ 
+ /*         
+  *         PCF8575 chip GPIO description. 
+  *          
+  *  ___    ________________________
+  *  INT  -|                        |-  VCC
+  *   A1  -|                        |-  SDA
+  *   A2  -|                        |-  SCL
+  *   P0  -| RELAY #16              |-  A0
+  *   P1  -| RELAY #15     RELAY #8 |-  P15
+  *   P2  -| RELAY #14     RELAY #7 |-  P14
+  *   P3  -| RELAY #13     RELAY #6 |-  P13
+  *   P4  -| RELAY #12     RELAY #5 |-  P12
+  *   P5  -| RELAY #11     RELAY #4 |-  P11
+  *   P6  -| RELAY #10     RELAY #3 |-  P10
+  *   P7  -| RELAY #9      RELAY #2 |-  P9
+  *  GND  -|               RELAY #1 |-  P8
+  *        |________________________|
+  *        
+  */ 
+
+ 
+#include "Arduino.h"
+#include "PCF8575.h"
+
+
+PCF8575 pcf8575(0x27); // Set i2c address. This slave address is changeable via dip-switch on the pcb.
+
+byte pin_mas[] = {P0, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15};
+
+unsigned char i;
+
+#define switch_time 250
+#define  ON 0
+#define OFF 1
+
+void setup()
+{
+  // Set pinMode to OUTPUT
+  for (i=0;i<16;i++) { pcf8575.pinMode(i, OUTPUT); }
+
+  
+  // Set high level on each output pin
+  for (i=0;i<16;i++) {  pcf8575.digitalWrite(i, HIGH); }
+  
+  pcf8575.begin();
+}
+
+
+void loop()
+{
+  // delay time can be removed. it's not necessary, just for testing
+  
+  pcf8575.digitalWrite(P8, LOW); delay(switch_time);    // turn  ON relay #1
+  pcf8575.digitalWrite(P8, HIGH); delay(switch_time);   // turn OFF relay #1
+
+  pcf8575.digitalWrite(P9, LOW); delay(switch_time);    // turn  ON relay #2
+  pcf8575.digitalWrite(P9, HIGH); delay(switch_time);   // turn OFF relay #2
+
+  pcf8575.digitalWrite(P10, LOW); delay(switch_time);    // turn  ON relay #3
+  pcf8575.digitalWrite(P10, HIGH); delay(switch_time);   // turn OFF relay #3
+
+  pcf8575.digitalWrite(P11, LOW); delay(switch_time);    // turn  ON relay #4
+  pcf8575.digitalWrite(P11, HIGH); delay(switch_time);   // turn OFF relay #4
+
+  pcf8575.digitalWrite(P12, LOW); delay(switch_time);    // turn  ON relay #5
+  pcf8575.digitalWrite(P12, HIGH); delay(switch_time);   // turn OFF relay #5
+
+  pcf8575.digitalWrite(P13, LOW); delay(switch_time);    // turn  ON relay #6
+  pcf8575.digitalWrite(P13, HIGH); delay(switch_time);   // turn OFF relay #6
+
+  pcf8575.digitalWrite(P14, LOW); delay(switch_time);    // turn  ON relay #7
+  pcf8575.digitalWrite(P14, HIGH); delay(switch_time);   // turn OFF relay #7
+
+  pcf8575.digitalWrite(P15, LOW); delay(switch_time);    // turn  ON relay #8
+  pcf8575.digitalWrite(P15, HIGH); delay(switch_time);   // turn OFF relay #8
+
+  pcf8575.digitalWrite(P7, LOW); delay(switch_time);    // turn  ON relay #9
+  pcf8575.digitalWrite(P7, HIGH); delay(switch_time);   // turn OFF relay #9
+
+  pcf8575.digitalWrite(P6, LOW); delay(switch_time);    // turn  ON relay #10
+  pcf8575.digitalWrite(P6, HIGH); delay(switch_time);   // turn OFF relay #10
+
+  pcf8575.digitalWrite(P5, LOW); delay(switch_time);    // turn  ON relay #11
+  pcf8575.digitalWrite(P5, HIGH); delay(switch_time);   // turn OFF relay #11
+
+  pcf8575.digitalWrite(P4, LOW); delay(switch_time);    // turn  ON relay #12
+  pcf8575.digitalWrite(P4, HIGH); delay(switch_time);   // turn OFF relay #12
+
+  pcf8575.digitalWrite(P3, LOW); delay(switch_time);    // turn  ON relay #13
+  pcf8575.digitalWrite(P3, HIGH); delay(switch_time);   // turn OFF relay #13
+
+  pcf8575.digitalWrite(P2, LOW); delay(switch_time);    // turn  ON relay #14
+  pcf8575.digitalWrite(P2, HIGH); delay(switch_time);   // turn OFF relay #14
+
+  pcf8575.digitalWrite(P1, LOW); delay(switch_time);    // turn  ON relay #15
+  pcf8575.digitalWrite(P1, HIGH); delay(switch_time);   // turn OFF relay #15
+
+  pcf8575.digitalWrite(P0, LOW); delay(switch_time);    // turn  ON relay #16
+  pcf8575.digitalWrite(P0, HIGH); delay(switch_time);   // turn OFF relay #16
+
+
+}
