@@ -50,6 +50,9 @@ TI = "Temperatura Impulsió" Mesura a quina temperatura s'impulsa l'aigua cap al
 TR = "Temperatura Retorn" Mesura a quina temperatura retorna l'aigua enviada als radiadors.
 Per finalitzar hi ha un sensor de pressió que llegeix la pressió del sistema.
 PS = "Pressió Sistema" es un transductor situat al costat del vas d'expansió.
+Per tal de detectar fallades de les bombes hi ha dos contadors de fluxe (turbines - caudalimetres) que mesuren el volum d'aigua en circulàció mitjançants polsos per cada volta de la turbina.
+CC = "Caudalimetre caldera". Està situat despres de la vàlvula d'impulsió d'aigua "freda" a la caldera.
+CR = "Caudalimetre radiadors". Està situat en el circuit de retorn dels radiadors.
 
 Actuadors:
 RBP = "Rele Bomba Primaria" Rele en pararl.lel amb el TP que engega la Bomba Primaria.
@@ -59,7 +62,7 @@ RBS2 = "Rele Bomba Secundaria marxa 2" Activa la marxa 2 **
 RBS3 = "Rele Bomba Secundaria marxa 3" Activa la marxa 3 **
 ** Cal veure si és factible i si cal.
 RA = "Relé Alarma" Relé per activar un avís sonor/lluminós de perill.
-SCA= "Servo Control Admisió" Servomotor que pot obrir o ofegar l'entrada d'aire secundaria (posterior a la caldera - provinent del exterior)
+FINALMENT NO S'IMPLEMENTARÀ ((((SCA= "Servo Control Admisió" Servomotor que pot obrir o ofegar l'entrada d'aire secundaria (posterior a la caldera - provinent del exterior)))) En les proves he vist que l'únic que es produia era una mala combustió.
 
 Idea: Valorar la possibilitat d'utilitzar un SAI per alimentar les dues bombes i el controlador de seguretat. En cas de fallida electrica, podem tenir lectures per activar alarmes i tancar pas d'aire. EL controlador de confort no li cal, ja que si cau lectricitat els actuadors termics NO s'obriràn i deixan passar aigua a tots els radiadors. La bomba secundaria s'obrirà automàticament amb el termo interruptor i disisparà l'escalfor a tots els radiadors...
 
@@ -68,37 +71,37 @@ Creació d'un sistema de control per supervisar els valors del sistema, avisar d
 Per motius de seguretat dividirem el sistema amb dos controladors separats. 
 
 Controlador de seguretat:
-Basat en un ESP32 i amb funcionament autonom estarà conectat fisicament a TC, TF, PS i controlarà RBP, RA i SCA. Pot permetre el control RBP i SCA de forma remota si no està en alarma. En cas d'alarma només permetrà control manual usuari avançat. En cas d'alarma pot passar a controlar el Controlador de confort ordenant obrir tots els radiadors
+Basat en un ESP32 i amb funcionament autonom estarà conectat fisicament a TC, TF, PS, CC i CR i controlarà RBP, RA (ANULAT  SCA). Pot permetre el control RBP (ANULAT i SCA) de forma remota si no està en alarma. En cas d'alarma només permetrà control manual usuari avançat. En cas d'alarma pot passar a controlar el Controlador de confort ordenant obrir tots els radiadors
 
 Controlador de confort:
 Basat en un ESP32 i amb funcionament autonom estarà connectat fisicament a TI, TR i controlarà RBS (cal veure si cal RBS1, RBS2, RBS3) Podrà accedir a les lectures de TC, TF, PS i al estat de RBP (relé Bomba Primaria)
 
 Llegint els valors de TF deduirem si la caldera està en funcionament. Qualsevol valor superior a 45ºC serà considerat que la caldera està en funcionament i per tant hi ha presencia de foc/brasa en el seu interior. 
-Els valors de TF poden servir per calibrar ajustar els nivells del SCA, per optimitzar el consum de llenya.
+ANULAT (Els valors de TF poden servir per calibrar ajustar els nivells del SCA, per optimitzar el consum de llenya.)
 Idea: Podem mostrar una icona de flames en el display de control.
 
 Seguretat del sistema:
-De forma local el controlador de seguretat ha de funcionar amb indepencia de si està conectat a Home Assistant o la xarxa wifi
+De forma local el controlador de seguretat ha de funcionar amb indepencia de si està conectat a Home Assistant o la xarxa wifi.
 
 Llegint els valors de TC sabrem la temperatura de l'aigua de la caldera. Un valor superior a 50ºC hauria de donar la ordre d'engegar el el RELE de la BP (Bomba Primaria). Aquest valor hauria de ser lleugement inferior al d'activació del Termostat TP per poder tenir constancia que s'ha activat. Al deixar un valor superior al TP, aquest s'activa en cas que el sistema de control digital falli. Tant el RBP com el TP han d'estar conectats en paral.lel, d'aquesta forma es pot activar la BP des de qualsevol dels dos.
 
-Si el valor de TC passa dels 85ºC hauriem d'indicar una pre-alerta d'excés de temperatura de la caldera. Idea: Podem mostrar una icona de no posar més llenya al foc i indicador de tancar el tir frontal.
-Si el valor de TC passa dels 90ºC hauriem d'activar una alerta de sobretemperatura a la caldera.
-Si el valor de TC passa dels 95ºC hauriem d'activar una alerta sonora i sol.licitar l'activació d'una maniobra per refredar: Baixar a la sala de màquines i obrir els circuits purgadors perque el sistema de re-ompliment faci entrar aigua freda al sistema.
-Si el valor de TC passa dels 99ºC activar alerta sonora i sol.licitar apartar-se de la caldera per risc d'explosió.
+Si el valor de TC passa dels 80ºC hauriem d'indicar una pre-alerta d'excés de temperatura de la caldera. Idea: Podem mostrar una icona de no posar més llenya al foc i indicador de tancar el tir frontal.
+Si el valor de TC passa dels 85ºC hauriem d'activar una alerta de sobretemperatura a la caldera.
+Si el valor de TC passa dels 90ºC hauriem d'activar una alerta sonora i sol.licitar l'activació d'una maniobra per refredar: Baixar a la sala de màquines i obrir els circuits purgadors perque el sistema de re-ompliment faci entrar aigua freda al sistema.
+Si el valor de TC passa dels 95ºC activar alerta sonora i sol.licitar apartar-se de la caldera per risc d'explosió.
 
 Llegint els valors de PS podem coneixer la pressió del sistema.
 
 Si el valor de PS és inferior a 0,5Bar cal activar un avís de pressió insuficient al circuit. Indicar que cal revisar el circuit: Assegurar que les aixetes de pas estan obertes. Idea: Mostrar icona de no posar en marxa la caldera.
 Si el valor de PS és inferior a 0,5Bar i TC és superior a 50ºC i/o TF és superior a 50ºC (caldera en funcionament i poca pressió del sistema) activar els avisos anteriors i també avís sonor. 
 Si el valor de PS és superior a 2,0Bar activar avís de pressió alta del circuit.
-Si el valor de PS és superior a 2,5Bar activar avís de pressió alta de circuit i avís sonor. Sol.licitar maniobra de alleujament de pressió: Baixar a la sala màquines i obrir els circuits purgadors per alleugerir la pressió.
-Si el valor de PS passa dels 2,9Bar activar alerta sonora i sol.licitar apartar-se de la caldera per risc d'explosió.
+Si el valor de PS és superior a 2,4Bar activar avís de pressió alta de circuit i avís sonor. Sol.licitar maniobra de alleujament de pressió: Baixar a la sala màquines i obrir els circuits purgadors per alleugerir la pressió.
+Si el valor de PS passa dels 2,8Bar activar alerta sonora i sol.licitar apartar-se de la caldera per risc d'explosió.
 
-Idea: En el cas que TC passi de 95 i/o PS de 2,5 podriem forçar una maniobra automàtica de tancar el servo SCA obstruint completament l'entrada secundaria d'aire per intentar ofegar el foc del tot. Aquesta maniobra serviria per en cas de no atenció (per no estar a la casa, o per no estar conscients (dormint) intentar parar el funcionament de la caldera.
+Idea: ANULADA ((((En el cas que TC passi de 95 i/o PS de 2,5 podriem forçar una maniobra automàtica de tancar el servo SCA obstruint completament l'entrada secundaria d'aire per intentar ofegar el foc del tot. Aquesta maniobra serviria per en cas de no atenció (per no estar a la casa, o per no estar conscients (dormint) intentar parar el funcionament de la caldera.))
 
 Autoregulació de la combustió:
-Combinant les dades del segon sistema de control i sempre que no es donin situacions de perill, podem donar el control del SCA externament, ja sigui a un control manual o automatic de regulació de la combustió.
+ANULAT CONTROL SERVO Combinant les dades del segon sistema de control i sempre que no es donin situacions de perill, podem donar el control del SCA externament, ja sigui a un control manual o automatic de regulació de la combustió.
 
 Controlador de confort:
 Estarà fiscament connectat a TI i TR, RBS (possibilitat de control de marxes RBS1, RBS2, RBS3), i al control de la placa d'actuadors termics. Rebrà la informació dels valors de TC i TF i dels sensors de temperatura i presencia de les habitacions i temperatura exterior.
@@ -124,6 +127,11 @@ Podem distingir diversos modes de funcionament:
 
 - Confort total: S'intentarà mantenir tota la casa a la temperatura de confort (preestablerta).
 - Priorització de una o diverses zones: Es podra determinar de forma dinàmica quines zones tenen prioritat per intentar aconseguir la temperatura de confort en el temps mes breu.
+  Zones:
+        - Dormitoris
+        - Sala estar - Menjador - Cuna
+        - Estudi i/o Despatx
+        
 
 En funció de les hores del dia: 
 Mati: Sala estar, menjador, cuina, dormitoris i banys.
