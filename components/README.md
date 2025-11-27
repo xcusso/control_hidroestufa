@@ -54,3 +54,6 @@ https://es.aliexpress.com/item/1604305017.html?spm=a2g0o.order_list.order_list_m
 Suports carril DIN Esp32:
 https://es.aliexpress.com/item/1005005389975220.html?spm=a2g0o.order_list.order_list_main.101.2b1a194dQRiNnS&gatewayAdapt=glo2esp
 
+Indicadors luminics:
+https://es.aliexpress.com/item/1005006218361623.html?spm=a2g0o.order_list.order_list_main.11.2b1a194dQRiNnS&gatewayAdapt=glo2esp
+
