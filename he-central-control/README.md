@@ -6,6 +6,8 @@ La central de control rep la informació dels sensors:
 - Sensor temperatura ximeneia (tub de fums)
 - Sensor temperatura caldera (part superior hidro-estufa)
 - Sensor de pressió circuit. Sensor 5V 0-0,5MPa (0 a 5Bar)
+- Sensor caudalimetre circuit caldera.
+- Sensor caudalimetre circuit radiadors.
 
 Disposa dels següents actuadors:
 - Relé encesa Bomba impulsió primaria (recirculació caldera)
@@ -46,6 +48,6 @@ Amb aquest divisor tindrem una lectura màxima (3.4bar) de 2.42V a la que en teo
 A 3bar (maxim) esperarem una sortira de 2.180V, a 1,5bar (normal) llegirem 1.27V
 La presició és de 12bits.
 
-Control de servo:
+Caudalimetre: 
 
 
