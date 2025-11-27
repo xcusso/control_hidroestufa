@@ -11,21 +11,21 @@ PR = "Placa reles" Placa de reles d'estat solid que controlen els actuadors term
 També rep informació sobre la temperatura de les diferents estancies de la casa mitjançant Home Assistant
 
 En la instal.lació del col·lector (3+12) hi ha els següents circuits:
-0 - Connexió sensors Dallas impuls i retorn TI i TR
-1 - Sortida circuit per ACS*
-2 - Radiador Despatx (P0)
-3 - Radiador Escala
-4 - Radiador Cuina i Menjador (van seriats) (P0)
-5 - Radiador Rebedor (P0)
-6 - Radiador Menjador ? Cal identificar
-7 - Radiador Sala estar (2 radiadors seriats)
-8 - Tovallolero Bany (P0)
-9 - Radiador Suite (P1)
-10 - Radiador Estudi (2 radiadors seriats) (P1)
-11 - Radiador habitacions (2 radiadors en 2 habitacions seriats) (P1)
-12 - Tovallolero Bany Suite (P1)
-13 - Radiador passadis (P1)
-14 - Tovallolero Bany P1 (P1)
+01 - Connexió sensors Dallas impuls i retorn TI i TR
+02 - Sortida circuit per ACS*
+03 - Radiador Despatx (P0)
+04 - Radiador Escala
+05 - Radiador Cuina i Menjador (van seriats) (P0)
+06 - Radiador Rebedor (P0)
+07 - Radiador Menjador ? Cal identificar
+08 - Radiador Sala estar (2 radiadors seriats)
+09 - Tovallolero Bany (P0)
+10 - Radiador Suite (P1)
+11 - Radiador Estudi (2 radiadors seriats) (P1)
+12 - Radiador habitacions (2 radiadors en 2 habitacions seriats) (P1)
+13 - Tovallolero Bany Suite (P1)
+14 - Radiador passadis (P1)
+15 - Tovallolero Bany P1 (P1)
 * Està previst que si hi ha excedents de calor es pugui enviar a un termo electric/acumulador amb un serpentí.
   
 Els 14 circuits estan controlats per un actuador eletro-termic NO que quan rep tensió tanca el circuit. D'aquesta manera en cas de fallada electrica/software els actuadors obren tots els circuits evitant que la hidroestufa es sobre-escalfi.
@@ -62,9 +62,9 @@ En aquest cas no s'han de produir canvis en els actuadors ni en les bombes. Es p
 C - Potencia excesiva per demanda
 S'han assolit les temperatures de confort consignades i el diferencial entre TI i TR baixa i va augmentant TI
 Accions:
-- Reduir el tir secundari de Central de Control de forma progresiva en el temps (cal fer-ho de forma suau).
+- ANULAT (((((Reduir el tir secundari de Central de Control de forma progresiva en el temps (cal fer-ho de forma suau).))))
 - Indicar al display que cal reduir el tir de forma manual.
-  Si un cop el tir secundari es al minim programat cal:
+  ANULAT ((((Si un cop el tir secundari es al minim programat cal:)))
     - Anar desactivant els actuadors termics (obrint circuits per fer circular aigua calenta als radiadors) seguint un ordre de prioritats per potencia excesiva. Es farà de forma sequencial en funció de unes prioritats definides.
       Proposta de prioritats (sempre que no es trobin ja oberts): (On menys molesti una sobretemperatura)
       - Sortida ACS
@@ -84,9 +84,9 @@ Accions:
 D - Potencia insuficient per demanda
 Si la HE esta en funcionament i (amb independencia de que s'hagi assolit la temperatura de confort)
 Accions: 
-- Obrir el tir secundari de Central de Control de forma progresiva en el temps (cal fer-ho de forma suau).
+  ANULAT (((((- Obrir el tir secundari de Central de Control de forma progresiva en el temps (cal fer-ho de forma suau).)))))
 - Indicar al display que cal obrir el tir de forma manual o si ja està obert procedir a una recàrrega de combustible.
-  Si un cop el tir secundari està obert al màxim cal:
+  ANULAT ((((Si un cop el tir secundari està obert al màxim cal:))))
       Anar activant els actuadors termics (tancant circuits apagar radiadors) seguint un ordre de prioritats per potencia insuficient. Es farà de forma sequencial en funció de unes prioritats definides i del mode de la casa/presencia.
 MODE DIA
     Proposta de prioritats mode dia (sempre que no es trobin ja tancats): (On menys molesti una baixa temperatura)
@@ -119,13 +119,13 @@ MODE DIA
       - Tovallolero Bany Suite P1
       - Radiador habitacions
       - Radiador Suite
- * Tant en Mode DIA com en Mode NIT si s'activa el sensor de presencia mes de x minuts tindrà preferencia i anirà al final de l'escala. En cas de competencia entre zones amb presencia s'utilitzaràn les prioritats (p.e. Mode NIT Hi ha algu al Estudi i també a la Suite -> S'apagarà bans l'estudi i després la Suite.
+ * Tant en Mode DIA com en Mode NIT si s'activa el sensor de presencia mes de x minuts tindrà preferencia i anirà al final de l'escala. En cas de competencia entre zones amb presencia s'utilitzaràn les prioritats (p.e. Mode NIT Hi ha algu al Estudi i també a la Suite -> S'apagarà abans l'estudi i després la Suite.
 
 G - Alarma Sobretemperatura:
 La temperatura d'impulsió TI és superior a ?? 90ºC? (cal determinar aquest valor de forma experimental). TI: Temperatura màxima de seguretat (aquest valor experimental s'ha de poder configurar en programació en el propi ESP32)
 - Desactivar tots els actuadors termics (obrir tots els circuits)
 - Activar la BS (Bomba secundaria) a la màxima potencia. Central Control ha de rebre un avís per fer-ho.
-- Tancar el tir secundari de Central de Control.
+ANULAT ((- Tancar el tir secundari de Central de Control.))
 - Donar activació a un avís visual, sonor i missatge de Telegram.
 
 
