@@ -1,5 +1,8 @@
 # HE CENTRAL CONTROL
-# VERSIO 0.1
+# VERSIO 0.2
+## TODO
+# Cal fer la integració dels sensors de caudal
+
 
 esphome:
   name: he-central-control
@@ -52,63 +55,61 @@ binary_sensor:
         // Si la temperatura dels fums es inferior a 45ºC considerem que no hi ha foc.
         return false;
       }
-# ALARMA TEMP -> Poden obrir-se les vàlvules
+# ALARMA TEMP -> Hem d'obrir totes les vàlvules - Activar avis sonor
  - platform: template
    id: alarma_temp
    name: "Perill Sobretemperatura"
    lambda: |-
-      if (id(temp_aigua).state > 95) {
-        // Si la temperatura del aigua es superior a 95ºC considerem que hi ha perill sobretemperatura
+      if (id(temp_aigua).state > 85) {
+        // Si la temperatura del aigua es superior a 85ºC considerem que hi ha perill sobretemperatura
         return true;
       } else {
-        // Si la temperatura del aigua es inferior a 95ºC considerem que esta normal
+        // Si la temperatura del aigua es inferior a 85ºC considerem que esta normal
         return false;
       }
 
 # ALARMA PERILL TEMP
  - platform: template
-   id: perill_alta_temp
+   id: avis_alta_temp
    name: "Sobretemperatura"
    lambda: |-
-      if (id(temp_aigua).state > 90) {
-        // Si la temperatura del aigua es superior a 90ºC considerem que hi ha sobretemperatura
+      if (id(temp_aigua).state > 80) {
+        // Si la temperatura del aigua es superior a 80ºC considerem que hi ha sobretemperatura
         return true;
       } else {
-        // Si la temperatura del aigua es inferior a 90ºC considerem que esta normal
+        // Si la temperatura del aigua es inferior a 80ºC considerem que esta normal
         return false;
       }      
 
-# ALARMA PRESSIO
+# AVIS PRESSIO
  - platform: template
-   id: alarma_alta_pressio
+   id: avis_alta_pressio
    name: "Sobrepressió"
    lambda: |-
-      if (id(pressio).state > 2.5) {
-        // Si la pressio del aigua es superior a 2.5Bar considerem que hi ha sobrepressio
+      if (id(pressio).state > 2.0) {
+        // Si la pressio del aigua es superior a 2.0Bar considerem que hi ha sobrepressio
         return true;
       } else {
-        // Si la pressio del aigua es inferior a 2.5Bar considerem que esta normal
+        // Si la pressio del aigua es inferior a 2.0Bar considerem que esta normal
         return false;
-      }
-
-      
+      } 
 
 # ALARMA PERILL PRESSIO -> Per activar avís sonor
  - platform: template
-   id: perill_alta_pressio
+   id: alarma_alta_pressio
    name: "Perill Sobrepressió"
    lambda: |-
-      if (id(pressio).state > 2.8) {
-        // Si la pressio del aigua es superior a 2.8Bar considerem que hi ha perill sobrepressio
+      if (id(pressio).state > 2.5) {
+        // Si la pressio del aigua es superior a 2.5Bar considerem que hi ha alarma sobrepressio
         return true;
       } else {
-        // Si la pressio del aigua es inferior a 2.8Bar considerem que no hi ha perill
+        // Si la pressio del aigua es inferior a 2.5Bar considerem que no hi ha alarma
         return false;
       }
 
-  # ALARMA BAIXA PRESSIO
+# AVIS BAIXA PRESSIO
  - platform: template
-   id: alarma_baixa_pressio
+   id: avis_baixa_pressio
    name: "Poca pressió"
    lambda: |-
       if (id(pressio).state < 1) {
@@ -119,6 +120,29 @@ binary_sensor:
         return false;
       }
 
+# ALARMA BAIXA PRESSIO -> Per activar avís sonor
+ - platform: template
+   id: alarma_baixa_pressio
+   name: "Perill poca pressió"
+   lambda: |-
+      if (id(pressio).state < 0.5) {
+        // Si la pressio del aigua es inferior a 0.5Bar considerem que hi ha alarma baixa pressio
+        return true;
+      } else {
+        // Si la pressio del aigua es superior a 0.5Bar considerem que no hi ha alarma baixa pressio
+        return false;
+
+# ACTIVACIO ALARMA SONORA - Si hi ha alarma baixa o alta pressió o sobretemperatura
+ - platform: template
+   id: alarma_sonora
+   name: "Alarma"
+   lambda: |-
+      if ((alarma_baixa_pressio) or (alarma_alta_pressio) or (alarma_temp) or (alarma fallo sensors fum i temp caldera) {
+        // Si tenim alguna alarma activada
+        return true;
+      } else {
+        // Si no parem alarma
+        return false;
 
 
 sensor:
@@ -138,7 +162,7 @@ sensor:
     accuracy_decimals: 1
    
 
-  # Temperatura de fums   
+  # Temperatura aigua caldera  
   - platform: max31865
     name: "Temp aigua"
     id: temp_aigua
@@ -158,35 +182,29 @@ sensor:
        then:
         - switch.turn_off: rele_BP # Apaguem la bomba primaria
         - switch.turn_off: rele_BS # Apagauem la bomba secundaria
-        - switch.turn_off: alarma_sonora # Apaguem sonar alarma
+        - switch.turn_off: alarma_temp # Apaguem sonar alarma
     # Aigua calenta per engegar bomba primaria 
      - above: 50 
        below: 55
        then:
         - switch.turn_on: rele_BP # Engeguem la bomba primaria
         - switch.turn_off: rele_BS # Apaguem la bomba secundaria
-        - switch.turn_off: alarma_sonora # Apaguem sonar alarma
+        - switch.turn_off: alarma_temp # Apaguem sonar alarma
     # Aigua calenta en funcionament normal
      - above: 55 
-       below: 90 
+       below: 80 
         - switch.turn_on: rele_BP # Engeguem la bomba primaria
-        - switch.turn_on: rele_BS # Apaguem la bomba secundaria
-        - switch.turn_off: alarma_sonora # Apaguem sonar alarma
+        - switch.turn_on: rele_BS # Engeguem la bomba secundaria
+        - switch.turn_off: alarma_temp # Apaguem sonar alarma
     # Aigua massa calenta reduim admissió aire    
-     - above: 90
-       below: 95
+     - above: 80
+       below: 90
        then:
-         - servo.write:
-           id: control_aire 
-           level: !lambda 'return (id(TC).state)-90)*20;'# Tanca progresivament l'admisió de l'aire 90-> obert 95-> tancat
-        - switch.turn_off: alarma_sonora # Apaguem sonar alarma
+        - switch.turn_off: alarma_temp # Apaguem sonar alarma
     # Aigua massa calenta tanquem admissió aire i fem sonar alarma
-     - above: 95.0
+     - above: 90.0
        then:
-         - servo.write:
-           id: control_aire 
-           level: 100% # Tanca l'admisió secundaria d'aire
-         - switch.turn_on: alarma_sonora # Fem sonar alarma
+         - switch.turn_on: alarma_temp # Fem sonar alarma
 
 # Sensor pressió 
 # 0 - 0,5MPa  --> 0,5V - 4,5V (cal alimentar a 5V)
@@ -208,25 +226,18 @@ sensor:
       clamp:
         min_value: 0
     on_vaue_range:
-      - below: 2.8 # Si la pressió passa de 2.8
+      - below: 0.5 # Si la pressió es inferior a 0.5
         then:
-          - switch.turn_on: alarma_sonora # Fem sonar alarma
+          - switch.turn_on: alarma_pressio # Fem sonar alarma
+      - above: 0.5 # Si la pressió esta dins limits seguretat 0.5-2.5
+        below: 2.5
+        then:
+          - switch.turn_off: alarma_pressio # Parem alarma
+      - above: 2.5 # Si la pressió passa de 2.5
+        then:
+          - switch.turn_on: alarma_pressio # Fem sonar alarma
 
     # Cal fer un sensor binari intern per saber si cal activar o no alarma, pq no engegui per pressió i tanqui per temp normal o al reves.
-
-# Servo control aire secundari
-# Cal analitzar si es funcional
-
-servo:
-  - id: control_aire
-    output: pwm_output
-
-# On ESP32, use ledc output
-output:
-  - platform: ledc
-    id: pwm_output
-    pin: GPIO13
-    frequency: 50 Hz
 
 switch:
   - platform: gpio
@@ -240,3 +251,5 @@ switch:
   - platform: gpio
     pin: GPIO20
     id: alarma_sonora # Rele o alarma sonora per indicar emergencia
+
+  
