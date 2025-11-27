@@ -18,4 +18,5 @@ https://es.aliexpress.com/item/1005006099331280.html?spm=a2g0o.order_list.order_
 Actuador térmic:
 https://es.aliexpress.com/item/1005006234120673.html?spm=a2g0o.order_list.order_list_main.232.6309194ddhppbs&gatewayAdapt=glo2esp
 
-
+Selector confort (reles estat solid):
+https://www.tindie.com/products/bugrovs2012/16-channel-i2c-solid-state-relay-module/#product-reviews
